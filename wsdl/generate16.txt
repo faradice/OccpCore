@@ -1,0 +1,8 @@
+From project root directory run the following commands
+
+ # wsdl chargepoint service for the 1.6 version
+wsimport -Xnocompile -keep -extension  -Xendorsed -s src ./wsdl/OCPP_ChargePointService_1.6.wsdl
+
+# wsdl central service for the 1.6 version
+wsimport -Xnocompile -keep -extension  -Xendorsed -s src ./wsdl/OCPP_CentralSystemService_1.6.wsdl
+
