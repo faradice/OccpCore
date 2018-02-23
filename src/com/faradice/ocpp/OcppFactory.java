@@ -62,6 +62,16 @@ public class OcppFactory {
 		return centralService(endpoint, "urn://Ocpp/Cs/2015/10/", "CentralSystemService");
 	}
 		
+	public static CentralSystemService faraCentralService() {
+		String endpoint =  "http://localhost:8079/FaraCentralSystem";
+		return centralService(endpoint, "http://centralsystem.ocpp.faradice.com/", "CentralSystemService");
+	}
+		
+	public static CentralSystemService localDemo15CentralService() {
+		String endpoint =  "http://localhost:8080/Ocpp15WebAppDemo/CentralSystemService";
+		return centralService(endpoint, "urn://Ocpp/Cs/2012/06/", "CentralSystemService");
+	}
+	
 	public static void addHandler(BindingProvider bindingProvider) {
 		OcppHeaderHandler handler = new OcppHeaderHandler("Faradice1");
 		List<Handler> handlerChain = bindingProvider.getBinding().getHandlerChain();
