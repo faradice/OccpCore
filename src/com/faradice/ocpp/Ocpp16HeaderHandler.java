@@ -34,7 +34,6 @@ public class Ocpp16HeaderHandler implements SOAPHandler<SOAPMessageContext> {
 				String s1 = new String(bs.getBytes());
 				System.out.println(s1);
 
-				
 				SOAPEnvelope envelope = message.getSOAPPart().getEnvelope();
 				String ns = envelope.getNamespaceURI("ns");
 				if (ns == null) {

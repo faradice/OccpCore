@@ -40,6 +40,22 @@ public class Ocpp16Factory {
 		return centralService(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", "CentralSystemService",  "CentralSystemService");
 	}
 		
+	public static CentralSystemService loalChargePointCentralMockup(String chargePointId) {
+		// see end of WSDL: soap:address location="http://localhost:8079/FaraCentralSystem"
+		String endpoint = "http://localhost:8079/FaraCentralSystem";
+		
+		// see WSDL: targetNamespace="http://centralsystem.ocpp.faradice.com/"
+		String urn = "http://centralsystem.ocpp.faradice.com/";
+		
+		// See WSDL: name="CentralSystemService"
+		String serviceName = "CentralSystemService";
+
+		// See port list when connected to server or 
+		// in end of WSDL: port name="CentralSystemPort"
+		String portName = "CentralSystemPort";
+		return centralService(chargePointId, endpoint, urn, serviceName, portName);
+	}	
+
 	public static CentralSystemService digoCentralService16() {
 		String endpoint = "http://104.236.81.197:8088/cs_ocpp16/CentralSystemService";
 		return centralService("Faradice", endpoint);
