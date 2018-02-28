@@ -72,7 +72,7 @@ public class Ocpp16Factory {
 	}
 		
 	public static void addHandler(String chargPointId, BindingProvider bindingProvider) {
-		Ocpp16HeaderHandler handler = new Ocpp16HeaderHandler("chargPointId");
+		Ocpp16HeaderHandler handler = new Ocpp16HeaderHandler(chargPointId);
 		List<Handler> handlerChain = bindingProvider.getBinding().getHandlerChain();
 		handlerChain.add(handler);
 		bindingProvider.getBinding().setHandlerChain(handlerChain);
