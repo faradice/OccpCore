@@ -56,9 +56,11 @@ public class Ocpp16Factory {
 		return centralService(chargePointId, endpoint, urn, serviceName, portName);
 	}	
 
-	public static CentralSystemService digoCentralService16() {
+	public static CentralSystemService digoCentralService16(String chargePointId) {
 		String endpoint = "http://104.236.81.197:8088/cs_ocpp16/CentralSystemService";
-		return centralService("Faradice", endpoint);
+		String port = "CentralSystemServiceSoap12";
+		String serviceName = "CentralSystemService";
+		return centralService(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", serviceName, port);
 	}
 	
 	public static CentralSystemService directCentralService() {
