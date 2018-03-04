@@ -36,6 +36,10 @@ public class Ocpp16Factory {
 			centalSystemService = null;
 		}
 	}
+
+	public static void init(String chargePointId, String endpoint, String serviceName, String portName) {
+		init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", serviceName,  portName);
+	}
 	
 	public static void init(String chargePointId, String endpoint) {
 		init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", "CentralSystemService",  "CentralSystemService");
