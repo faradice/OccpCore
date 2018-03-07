@@ -21,7 +21,7 @@ public class Ocpp16Factory {
 		return centalSystemService;
 	}
 	
-	public static void init(String chargePointId, String endpoint, String urn, String serviceName, String portName) {
+	public static CentralSystemService init(String chargePointId, String endpoint, String urn, String serviceName, String portName) {
 		QName serviceQName = new QName(urn, serviceName);
 		QName portQName = new QName(urn, portName);
 
@@ -35,17 +35,18 @@ public class Ocpp16Factory {
 			e.printStackTrace();
 			centalSystemService = null;
 		}
+		return centalSystemService;
 	}
 
-	public static void init(String chargePointId, String endpoint, String serviceName, String portName) {
-		init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", serviceName,  portName);
+	public static CentralSystemService init(String chargePointId, String endpoint, String serviceName, String portName) {
+		return init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", serviceName,  portName);
 	}
 	
-	public static void init(String chargePointId, String endpoint) {
-		init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", "CentralSystemService",  "CentralSystemService");
+	public static CentralSystemService init(String chargePointId, String endpoint) {
+		return init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", "CentralSystemService",  "CentralSystemService");
 	}
 		
-	public static void loalChargePointCentralMockup(String chargePointId) {
+	public static CentralSystemService loalChargePointCentralMockup(String chargePointId) {
 		// see end of WSDL: soap:address location="http://localhost:8079/FaraCentralSystem"
 		String endpoint = "http://localhost:8079/FaraCentralSystem";
 		
@@ -58,24 +59,24 @@ public class Ocpp16Factory {
 		// See port list when connected to server or 
 		// in end of WSDL: port name="CentralSystemPort"
 		String portName = "CentralSystemPort";
-		init(chargePointId, endpoint, urn, serviceName, portName);
+		return init(chargePointId, endpoint, urn, serviceName, portName);
 	}	
 
-	public static void digoCentralService16(String chargePointId) {
+	public static CentralSystemService digoCentralService16(String chargePointId) {
 		String endpoint = "http://104.236.81.197:8088/cs_ocpp16/CentralSystemService";
 		String port = "CentralSystemServiceSoap12";
 		String serviceName = "CentralSystemService";
-		init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", serviceName, port);
+		return init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", serviceName, port);
 	}
 	
-	public static void directCentralService() {
+	public static CentralSystemService directCentralService() {
 		String endpoint = "http://localhost:8085/Fara_occp/CentralSystemService";
-		init("Faradice", endpoint);
+		return init("Faradice", endpoint);
 	}
 		
-	public static void faraCentralService() {
+	public static CentralSystemService faraCentralService() {
 		String endpoint =  "http://localhost:8079/FaraCentralSystem";
-		init("Faradice", endpoint, "http://centralsystem.ocpp.faradice.com/", "CentralSystemService", "CentralSystemService");
+		return init("Faradice", endpoint, "http://centralsystem.ocpp.faradice.com/", "CentralSystemService", "CentralSystemService");
 	}
 		
 	private static void addHandler(String chargPointId, BindingProvider bindingProvider) {
