@@ -69,6 +69,15 @@ public class Ocpp16Factory {
 		return init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", serviceName, port);
 	}
 	
+	public static CentralSystemService oncoreEndpoint(String chargePointId) {
+		String endpoint = "http://oncore-test.on.is/OcppServices/Ocpp16/Ocpp16Service.svc";	
+		String uri = endpoint+"?wsdl";
+		String serviceName = "Ocpp16Service";
+		String port = "CentralSystemServiceSoap12";
+		return init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", serviceName, port);
+	}
+
+	
 	public static CentralSystemService directCentralService() {
 		String endpoint = "http://localhost:8085/Fara_occp/CentralSystemService";
 		return init("Faradice", endpoint);
@@ -86,5 +95,9 @@ public class Ocpp16Factory {
 		bindingProvider.getBinding().setHandlerChain(handlerChain);
 		System.out.println("Handler added: "+handler.getClass().getName());
 	}
-		
+	
+	
+	public static void main(String[] args) {
+		oncoreEndpoint("coreTest");
+	}
 }
