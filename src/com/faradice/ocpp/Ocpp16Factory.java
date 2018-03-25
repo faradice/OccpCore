@@ -13,6 +13,7 @@ import ocpp.cs._2015._10.CentralSystemService;
 
 public class Ocpp16Factory {
 	private static CentralSystemService centalSystemService = null;
+	private static String endPoint = "None";
 
 	public static CentralSystemService get() {
 		if (centalSystemService == null) {
@@ -34,7 +35,9 @@ public class Ocpp16Factory {
 		} catch (Exception e) {
 			e.printStackTrace();
 			centalSystemService = null;
+			endPoint = "Error when connecting to "+endpoint+ " "+e.getMessage();
 		}
+		endPoint = endpoint;
 		return centalSystemService;
 	}
 
@@ -71,7 +74,6 @@ public class Ocpp16Factory {
 	
 	public static CentralSystemService oncoreEndpoint(String chargePointId) {
 		String endpoint = "http://oncore-test.on.is/OcppServices/Ocpp16/Ocpp16Service.svc";	
-		String uri = endpoint+"?wsdl";
 		String serviceName = "Ocpp16Service";
 		String port = "CentralSystemServiceSoap12";
 		return init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", serviceName, port);
@@ -96,6 +98,9 @@ public class Ocpp16Factory {
 		System.out.println("Handler added: "+handler.getClass().getName());
 	}
 	
+	public static String endPoint() {
+		return endPoint;
+	}
 	
 	public static void main(String[] args) {
 		oncoreEndpoint("coreTest");
