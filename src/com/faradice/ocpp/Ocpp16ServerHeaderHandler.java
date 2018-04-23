@@ -6,10 +6,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPElement;
-import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
@@ -33,8 +30,10 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 
 	public boolean handleMessage(SOAPMessageContext context) {
 		SOAPMessage message = context.getMessage();
+		
 		ByteOutputStream bs = new ByteOutputStream();
 		try {
+			message.setProperty (javax.xml.soap.SOAPMessage.CHARACTER_SET_ENCODING, "UTF-8");
 			message.writeTo(bs);
 		} catch (SOAPException | IOException e) {
 			e.printStackTrace();
