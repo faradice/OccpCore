@@ -24,6 +24,7 @@ public class Ocpp16ChargePointHeaderHandler implements SOAPHandler<SOAPMessageCo
 		SOAPMessage message = context.getMessage();
 		
 		ByteOutputStream bs = new ByteOutputStream();
+		int size = -1;
 		try {
 //			message.setContentDescription("application/soap+xml; charset=utf-8");
 			message.writeTo(bs);
@@ -31,7 +32,7 @@ public class Ocpp16ChargePointHeaderHandler implements SOAPHandler<SOAPMessageCo
 		} catch (SOAPException | IOException e) {
 			e.printStackTrace();
 		}
-		String s = new String(bs.getBytes());
+		String s = new String(bs.getBytes(), 0, bs.size());
 		System.out.println(s);
 		return true;
 	}
