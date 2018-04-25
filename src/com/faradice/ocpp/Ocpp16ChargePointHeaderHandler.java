@@ -14,18 +14,10 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
-public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext> {
-	final static Logger log = Logger.getLogger(Ocpp16ServerHeaderHandler.class.getName());
+public class Ocpp16ChargePointHeaderHandler implements SOAPHandler<SOAPMessageContext> {
+	final static Logger log = Logger.getLogger(Ocpp16ChargePointHeaderHandler.class.getName());
 
-	public final String chargePointID;
-
-	public Ocpp16ServerHeaderHandler() {
-		this("Server");
-	}
-
-	
-	public Ocpp16ServerHeaderHandler(String cpi) {
-		this.chargePointID = cpi;
+	public Ocpp16ChargePointHeaderHandler() {
 	}
 
 	public boolean handleMessage(SOAPMessageContext context) {
@@ -33,7 +25,9 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 		
 		ByteOutputStream bs = new ByteOutputStream();
 		try {
+//			message.setContentDescription("application/soap+xml; charset=utf-8");
 			message.writeTo(bs);
+//			message.saveChanges();
 		} catch (SOAPException | IOException e) {
 			e.printStackTrace();
 		}
@@ -52,6 +46,7 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 
 	public Set<QName> getHeaders() {
 		Set<QName> qns = new HashSet<>();
+		qns.add(new QName("urn://Ocpp/Cs/2015/10/","chargeBoxIdentity"));
 		return qns;
 	}
 
