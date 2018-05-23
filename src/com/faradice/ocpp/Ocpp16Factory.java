@@ -72,7 +72,7 @@ public class Ocpp16Factory {
 		return init(chargePointId, endpoint, "urn://Ocpp/Cs/2015/10/", serviceName, port);
 	}
 	
-	public static CentralSystemService oncoreEndpoint(String chargePointId) {
+	public static CentralSystemService oncoreTestEndpoint(String chargePointId) {
 		String endpoint = "http://oncore-test.on.is/ocpp-server/OcppServices/Ocpp16/Ocpp16Service.svc";
 		String serviceName = "Ocpp16Service";
 		String port = "CentralSystemServiceSoap12";
@@ -103,6 +103,5 @@ public class Ocpp16Factory {
 	}
 	
 	public static void main(String[] args) {
-		oncoreEndpoint("coreTest");
 	}
 }
