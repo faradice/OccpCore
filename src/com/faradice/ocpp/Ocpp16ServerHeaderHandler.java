@@ -33,7 +33,6 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 		
 		ByteOutputStream bs = new ByteOutputStream();
 		try {
-			message.setProperty (javax.xml.soap.SOAPMessage.CHARACTER_SET_ENCODING, "UTF-8");
 			message.writeTo(bs);
 		} catch (SOAPException | IOException e) {
 			e.printStackTrace();
@@ -53,7 +52,6 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 
 	public Set<QName> getHeaders() {
 		Set<QName> qns = new HashSet<>();
-		qns.add(new QName("urn://Ocpp/Cs/2015/10/","chargeBoxIdentity"));
 		return qns;
 	}
 
