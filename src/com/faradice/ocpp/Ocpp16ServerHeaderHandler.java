@@ -6,11 +6,17 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.SOAPPart;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
@@ -29,28 +35,52 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 	}
 
 	public boolean handleMessage(SOAPMessageContext context) {
-		SOAPMessage message = context.getMessage();
-		Boolean isOutbound = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
-		if (isOutbound) {
-			System.out.println("Return message");
-			ByteOutputStream bs = new ByteOutputStream();
-			try {
-				message.writeTo(bs);
-			} catch (SOAPException | IOException e) {
-				e.printStackTrace();
+		try {
+			SOAPMessage message = context.getMessage();
+			Boolean isOutbound = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+			if (isOutbound) {
+				SOAPMessage msg = ((SOAPMessageContext) context).getMessage();
+				SOAPPart sp = msg.getSOAPPart();
+				SOAPEnvelope env = sp.getEnvelope();
+				SOAPHeader soapHeader = env.getHeader();
+				soapHeader.getChildElements();
+				NodeList net = soapHeader.getElementsByTagName("Action");
+				for (int i = 0; i< net.getLength(); i++) {
+					Node n = net.item(i);
+					if (n.getNodeName().equals("Action")) {
+						System.out.println("found action");
+						NodeList childNodes = n.getChildNodes();
+						for (int l= 0; l < childNodes.getLength(); l++) {
+							Node cn = childNodes.item(l);
+							System.out.println(cn);
+						}
+						n.getNextSibling();
+					}
+				}
+				
+				ByteOutputStream bs = new ByteOutputStream();
+				try {
+					message.writeTo(bs);
+				} catch (SOAPException | IOException e) {
+					e.printStackTrace();
+				}
+				String s = new String(bs.getBytes(), 0, bs.size());
+				System.out.println(s);
 			}
-			String s = new String(bs.getBytes(), 0, bs.size());
-			System.out.println(s);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return true;
 	}
 
 
 	public boolean handleFault(SOAPMessageContext context) {
+		System.out.println("handleFault");
 		return true;
 	}
 
 	public void close(MessageContext context) {
+		System.out.println("Close");
 	}
 
 	public Set<QName> getHeaders() {
