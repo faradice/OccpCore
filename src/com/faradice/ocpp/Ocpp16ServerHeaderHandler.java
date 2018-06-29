@@ -30,15 +30,18 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 
 	public boolean handleMessage(SOAPMessageContext context) {
 		SOAPMessage message = context.getMessage();
-		
-		ByteOutputStream bs = new ByteOutputStream();
-		try {
-			message.writeTo(bs);
-		} catch (SOAPException | IOException e) {
-			e.printStackTrace();
+		Boolean isOutbound = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+		if (isOutbound) {
+			System.out.println("Return message");
+			ByteOutputStream bs = new ByteOutputStream();
+			try {
+				message.writeTo(bs);
+			} catch (SOAPException | IOException e) {
+				e.printStackTrace();
+			}
+			String s = new String(bs.getBytes(), 0, bs.size());
+			System.out.println(s);
 		}
-		String s = new String(bs.getBytes(), 0, bs.size());
-		System.out.println(s);
 		return true;
 	}
 
