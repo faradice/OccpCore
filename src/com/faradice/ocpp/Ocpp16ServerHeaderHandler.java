@@ -18,6 +18,8 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl;
+import com.sun.org.apache.xerces.internal.dom.TextImpl;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext> {
@@ -50,9 +52,14 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 					if (n.getNodeName().equals("Action")) {
 						System.out.println("found action");
 						NodeList childNodes = n.getChildNodes();
+						Node cn = null;
 						for (int l= 0; l < childNodes.getLength(); l++) {
-							Node cn = childNodes.item(l);
-							System.out.println(cn);
+							cn = childNodes.item(l);
+							System.out.println("NODE "+l+":"+cn);
+							if (cn instanceof TextImpl) {
+								CoreDocumentImpl cdi = new CoreDocumentImpl();
+								cn.setNodeValue("/RemoteStartTransactionResponse");
+							}
 						}
 						n.getNextSibling();
 					}
