@@ -37,7 +37,7 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 		} catch (SOAPException | IOException e) {
 			e.printStackTrace();
 		}
-		String s = new String(bs.getBytes());
+		String s = new String(bs.getBytes(), 0, bs.size());
 		System.out.println(s);
 		return true;
 	}
