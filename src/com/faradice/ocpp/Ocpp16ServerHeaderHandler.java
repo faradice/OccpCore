@@ -56,7 +56,7 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 							if (cn instanceof TextImpl) {
 								String textNow = cn.getTextContent();
 								System.out.println("Now:" + textNow);
-								cn.setTextContent("Blablabla");
+								cn.setTextContent("/RemoteStartTransactionResponse");
 								textNow = cn.getTextContent();
 								System.out.println("after:" + textNow);
 							}
