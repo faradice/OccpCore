@@ -31,7 +31,6 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 		this("Server");
 	}
 
-	
 	public Ocpp16ServerHeaderHandler(String cpi) {
 		this.chargePointID = cpi;
 	}
@@ -47,24 +46,25 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 				SOAPHeader soapHeader = env.getHeader();
 				soapHeader.getChildElements();
 				NodeList net = soapHeader.getElementsByTagName("Action");
-				for (int i = 0; i< net.getLength(); i++) {
+				for (int i = 0; i < net.getLength(); i++) {
 					Node n = net.item(i);
 					if (n.getNodeName().equals("Action")) {
-						System.out.println("found action");
 						NodeList childNodes = n.getChildNodes();
 						Node cn = null;
-						for (int l= 0; l < childNodes.getLength(); l++) {
+						for (int l = 0; l < childNodes.getLength(); l++) {
 							cn = childNodes.item(l);
-							System.out.println("NODE "+l+":"+cn);
 							if (cn instanceof TextImpl) {
-								CoreDocumentImpl cdi = new CoreDocumentImpl();
-								cn.setNodeValue("/RemoteStartTransactionResponse");
+								String textNow = cn.getTextContent();
+								System.out.println("Now:" + textNow);
+								cn.setTextContent("Blablabla");
+								textNow = cn.getTextContent();
+								System.out.println("after:" + textNow);
 							}
 						}
 						n.getNextSibling();
 					}
 				}
-				
+				message.saveChanges();
 				ByteOutputStream bs = new ByteOutputStream();
 				try {
 					message.writeTo(bs);
@@ -80,9 +80,7 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 		return true;
 	}
 
-
 	public boolean handleFault(SOAPMessageContext context) {
-		System.out.println("handleFault");
 		return true;
 	}
 
