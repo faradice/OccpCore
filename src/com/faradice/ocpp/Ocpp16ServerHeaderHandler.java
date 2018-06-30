@@ -56,7 +56,8 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 							if (cn instanceof TextImpl) {
 								String textNow = cn.getTextContent();
 								System.out.println("Now:" + textNow);
-								cn.setTextContent("/RemoteStartTransactionResponse");
+								String newText = textNow.replace("urn://Ocpp/Cp/2015/10/:ChargePointService:", "/");
+								cn.setTextContent(newText);
 								textNow = cn.getTextContent();
 								System.out.println("after:" + textNow);
 							}
@@ -85,7 +86,6 @@ public class Ocpp16ServerHeaderHandler implements SOAPHandler<SOAPMessageContext
 	}
 
 	public void close(MessageContext context) {
-		System.out.println("Close");
 	}
 
 	public Set<QName> getHeaders() {
