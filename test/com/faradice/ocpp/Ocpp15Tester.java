@@ -42,7 +42,6 @@ public class Ocpp15Tester {
 			Service service = Service.create(url, serviceQName);
 			AddressingFeature af = new AddressingFeature();
 			centralSystemService = service.getPort(portQName, CentralSystemService.class, af);
-//			addHandler(chargePointId, (BindingProvider) centralSystemService);
 		} catch (Exception e) {
 			e.printStackTrace();
 			centralSystemService = null;
