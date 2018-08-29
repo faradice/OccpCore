@@ -18,7 +18,6 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl;
 import com.sun.org.apache.xerces.internal.dom.TextImpl;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
