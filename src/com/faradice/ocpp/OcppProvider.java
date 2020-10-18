@@ -127,7 +127,7 @@ public class OcppProvider {
 			if (centralService == null) {
 				return;
 			}
-			FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Bootup");
+			FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Bootup");
 			bootNotificationResponse = null;
 			BootNotificationRequest breq = new BootNotificationRequest();
 			breq.setChargeBoxSerialNumber("FD-X1-110042");
@@ -150,16 +150,16 @@ public class OcppProvider {
 			RegistrationStatus status = bootNotificationResponse.getStatus();
 			bootInterval = bootNotificationResponse.getInterval();
 			if (status.equals(RegistrationStatus.ACCEPTED)) {
-				FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Bootup accepted");
+				FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Bootup accepted");
 				heartbeatInterval = Math.max(bootNotificationResponse.getInterval(), MIN_HEARTBEAT);
 			} else {
 				close();
-				FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP not accepted");
+				FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP not accepted");
 				heartbeatInterval = bootNotificationResponse.getInterval();
 			}
 		} catch (Throwable t) {
 			Log.error(t.getMessage(), t);
-			FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Bootup error: " + t.getMessage());
+			FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Bootup error: " + t.getMessage());
 			close();
 		}
 	}
@@ -176,7 +176,7 @@ public class OcppProvider {
 		currentRFID = rfid;
 		try {
 			Log.info("authenticate " + rfid);
-			FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Authenticating " + rfid);
+			FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Authenticating " + rfid);
 
 			if (!booted()) {
 				return provideAccessWhenBootFailed;
@@ -191,15 +191,15 @@ public class OcppProvider {
 			authorizeTag = authorizeResponse.getIdTagInfo();
 			Log.info("Authentication from server: " + authorizeTag.getStatus().value());
 			if (authorizeTag.getStatus().equals(AuthorizationStatus.ACCEPTED)) {
-				FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Authenticate accepted for " + rfid);
+				FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Authenticate accepted for " + rfid);
 				authenticated = true;
 			} else {
-				FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Authenticate NOT accepted for " + rfid);
+				FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Authenticate NOT accepted for " + rfid);
 				authenticated = false;
 			}
 		} catch (Throwable t) {
 			Log.error(t);
-			FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Authenticate error: " + t.getMessage());
+			FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Authenticate error: " + t.getMessage());
 			authenticated = provideAccessWhenBootFailed;
 		}
 		Log.debug("Authenticate result for " + rfid + " " + authenticated);
@@ -226,23 +226,23 @@ public class OcppProvider {
 
 			long now = System.currentTimeMillis();
 			if (currentRFID == null) {
-				FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Start Transaction failed. RFID not set when authenticating");
+				FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Start Transaction failed. RFID not set when authenticating");
 				Log.error(rfid + " was not authenticated.");
 			}
 
 			if (currentRFID == null || !currentRFID.equals(rfid)) {
 				Log.error("Trying to start transaction for " + rfid + " but authenticated tag is " + currentRFID);
-				FaraFiles.appendToFile(FaraFiles.LOG_FILE, "Trying to start transaction for " + rfid + " but authenticated tag is " + currentRFID);
+				FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "Trying to start transaction for " + rfid + " but authenticated tag is " + currentRFID);
 			}
 
 			if (authorizeTag == null && !(rfid.equalsIgnoreCase(OPEN_CHARGER_RFID))) {
 				Log.error("Trying to start transaction for " + rfid + " but id Tag from authentication is not set. Check if authenticate has been called");
-				FaraFiles.appendToFile(FaraFiles.LOG_FILE, "Trying to start transaction for " + rfid + " but id Tag from authentication is not set. Check if authenticate has been called");
+				FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "Trying to start transaction for " + rfid + " but id Tag from authentication is not set. Check if authenticate has been called");
 			}
 
 			if (authorizeTag != null && now > authorizeTag.getExpiryDate().toGregorianCalendar().getTimeInMillis()) {
 				Log.error("The Authentication expired " + FaraDates.getDateTime(authorizeTag.getExpiryDate().toGregorianCalendar().getTimeInMillis()));
-				FaraFiles.appendToFile(FaraFiles.LOG_FILE, "The Authentication expired " + FaraDates.getDateTime(authorizeTag.getExpiryDate().toGregorianCalendar().getTimeInMillis()));
+				FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "The Authentication expired " + FaraDates.getDateTime(authorizeTag.getExpiryDate().toGregorianCalendar().getTimeInMillis()));
 			}
 			StartTransactionRequest streq = new StartTransactionRequest();
 			streq.setConnectorId(connectorId);
@@ -255,7 +255,7 @@ public class OcppProvider {
 			}
 			updateSystemTime(streq.getTimestamp());
 			accepted = true;
-			FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCCPP Start Transaction accepted for RFID "+currentRFID);
+			FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCCPP Start Transaction accepted for RFID "+currentRFID);
 		} catch (Throwable t) {
 			t.printStackTrace();
 			Log.error(t);
@@ -277,7 +277,7 @@ public class OcppProvider {
 		try {
 			stopTransactionTag = null;
 			Log.info("Stop transaction for " + rfid);
-			FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Stop transaction for " + rfid);
+			FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Stop transaction for " + rfid);
 
 			if (!booted()) {
 				return;
@@ -285,7 +285,7 @@ public class OcppProvider {
 
 			if (rfid == null || !rfid.equals(currentRFID)) {
 				Log.error("Invalid rfid when stopping transaction for " + rfid + " current id is " + currentRFID);
-				FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Invalid rfid when stopping transaction for " + rfid + " current id is " + currentRFID);
+				FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Invalid rfid when stopping transaction for " + rfid + " current id is " + currentRFID);
 			}
 
 			StopTransactionRequest streq = new StopTransactionRequest();
@@ -316,7 +316,7 @@ public class OcppProvider {
 			startTransactionResponse = null;
 		} catch (Throwable t) {
 			Log.error(t);
-			FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Error wehn stopping chargaction for " + rfid + " "+t.getMessage());
+			FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Error wehn stopping chargaction for " + rfid + " "+t.getMessage());
 		}
 		currentRFID = null;
 	}
@@ -373,7 +373,7 @@ public class OcppProvider {
 		for (SampledValue sm : mvreq.getMeterValue().get(0).getSampledValue()) {
 			valStr+=sm.getMeasurand().name()+"="+ sm.getMeasurand().value();
 		}
-		FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP Meter Value: " + valStr);;
+		FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP Meter Value: " + valStr);;
 	}
 
 	public void meterValue(int connectorId, String eventLine) {
@@ -398,7 +398,7 @@ public class OcppProvider {
 		snreq.setErrorCode(cpErrorCode(eventLine));
 		ChargePointStatus cps = cpStatus(eventLine);
 		snreq.setStatus(cps);
-		FaraFiles.appendToFile(FaraFiles.LOG_FILE, "OCPP MeterValue for " + logRFID + " "+cps.name());
+		FaraFiles.appendRowToCSVFile(FaraFiles.LOG_FILE, "OCPP MeterValue for " + logRFID + " "+cps.name());
 		centralService.statusNotification(snreq);
 	}
 
