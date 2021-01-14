@@ -54,8 +54,9 @@ public class Ocpp16Factory {
 		String endpoint = "http://localhost:8079/FaraCentralSystem";
 		
 		// see WSDL: targetNamespace="http://centralsystem.ocpp.faradice.com/"
-		String urn = "http://centralsystem.ocpp.faradice.com/";
-		
+//		String urn = "http://centralsystem.ocpp.faradice.com/";
+		String urn = "urn://Ocpp/Cs/2015/10/";
+
 		// See WSDL: name="CentralSystemService"
 		String serviceName = "CentralSystemService";
 
