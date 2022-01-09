@@ -34,7 +34,7 @@ import ocpp.cs._2015._10.StopTransactionRequest;
 import ocpp.cs._2015._10.StopTransactionResponse;
 
 @WebService(endpointInterface = "ocpp.cs._2015._10.CentralSystemService")
-@HandlerChain(file="handler_chain.xml")
+//@HandlerChain(file="handler_chain.xml")
 @Addressing(required = true)
 public class CentralSystem implements CentralSystemService {
 	public static final Logger logger = Logger.getLogger(CentralSystem.class.getName());
