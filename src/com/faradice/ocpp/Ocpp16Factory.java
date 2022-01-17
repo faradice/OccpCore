@@ -9,6 +9,7 @@ import javax.xml.ws.Service;
 import javax.xml.ws.handler.Handler;
 import javax.xml.ws.soap.AddressingFeature;
 
+import com.faradice.faranet.FaraHttp;
 import ocpp.cs._2015._10.CentralSystemService;
 
 public class Ocpp16Factory {
@@ -51,7 +52,9 @@ public class Ocpp16Factory {
 		
 	public static CentralSystemService loalChargePointCentralMockup(String chargePointId) {
 		// see end of WSDL: soap:address location="http://localhost:8079/FaraCentralSystem"
-		String endpoint = "http://localhost:8079/FaraCentralSystem";
+
+		String host = FaraHttp.ipAddress();
+		String endpoint = "http://"+host+":8079/FaraCentralSystem";
 		
 		// see WSDL: targetNamespace="http://centralsystem.ocpp.faradice.com/"
 //		String urn = "http://centralsystem.ocpp.faradice.com/";
@@ -104,5 +107,6 @@ public class Ocpp16Factory {
 	}
 	
 	public static void main(String[] args) {
+		loalChargePointCentralMockup("Fara1");
 	}
 }
